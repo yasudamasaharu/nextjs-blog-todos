@@ -53,7 +53,6 @@ export async function getStaticPaths(){
 
 export async function getStaticProps({params}) {
   const {post: post} = await getPostData(params.id);
-  // {post: post}は {post}に省略可能では？
   return {
     props: {
       post,
