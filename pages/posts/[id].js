@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { getAllPostIds, getPostData } from '../../lib/posts';
 
-export default function Post({post}) {
+export default function Post({ post }) {
   const router = useRouter();
 
-  if(!post) {
+  if(router.isFallback || !post) {
     return <div>Loading...</div>;
   }
   return (
@@ -47,15 +47,16 @@ export async function getStaticPaths(){
   
   return {
     paths,
-    fallback: false
+    fallback: true
   }
 }
 
 export async function getStaticProps({params}) {
-  const {post: post} = await getPostData(params.id);
+  const post = await getPostData(params.id);
   return {
     props: {
       post,
-    }
+    },
+    revalidate: 3,
   }
 }
